@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 import Navigation from './components/navigation/Navigation';
 import Logo from './components/logo/Logo';
+import Clarifai from 'clarifai';
 import Rank from './components/rank/Rank';
 import ImageLinkForm  from './components/imagelinkform/ImageLinkForm';
+import FaceRecognition from './components/facerecognition/FaceRecognition';
 import Particles from 'react-particles-js';
 import './App.css';
 import 'tachyons';
 
 
+//define the app for Clarifai API, and add the API key. 
+const app = new Clarifai.App({
+ apiKey: process.env.REACT_APP_CLARIFAI_API_KEY
+});
+
+//Particles.js background properties.
 const particlesOpt = {
             		particles: {
             			number:{
-            				value: 80,
+            				value: 60,
             				density: {
             					enable: true,
             					value_area: 800
@@ -21,6 +29,31 @@ const particlesOpt = {
             	}
 
 class App extends Component {
+	constructor(){
+		super();
+		this.state= {
+			input: '',
+			imageUrl: ''
+		}
+	}
+
+	onInputChange = (event) => {
+		this.setState({input: event.target.value});
+	}
+//listen for image link submission and call the Clarifai API to find a human face on the picture. 
+	onButtonSubmit = () => {
+		console.log('click');
+		this.setState({imageuRL: this.state.input});
+			app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
+    		function(response) {
+      	// do something with response
+    	},
+    	function(err) {
+      // there was an error
+    }
+  	);
+	}
+// Render method for components. 
   render() {
     return (
       <div className="App">
@@ -28,9 +61,10 @@ class App extends Component {
       <Navigation />
       <Logo /> 
       <Rank />
-      <ImageLinkForm />
-      {/*
-      <FaceRecognition /> */}
+      <ImageLinkForm 
+      onInputChange= {this.onInputChange} 
+      onButtonSubmit={this.onButtonSubmit}/>
+      <FaceRecognition  imageUrl = {this.state.imageUrl}/> 
       </div>
     );
   }
