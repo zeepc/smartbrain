@@ -12,7 +12,7 @@ import 'tachyons';
 
 //define the app for Clarifai API, and add the API key. 
 const app = new Clarifai.App({
- apiKey: process.env.REACT_APP_CLARIFAI_API_KEY
+ apiKey:process.env.REACT_APP_CLARIFAI_API_KEY
 });
 
 //Particles.js background properties.
