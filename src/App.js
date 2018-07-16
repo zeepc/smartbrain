@@ -43,13 +43,14 @@ class App extends Component {
 //listen for image link submission and call the Clarifai API to find a human face on the picture. 
 	onButtonSubmit = () => {
 		console.log('click');
-		this.setState({imageuRL: this.state.input});
+		this.setState({imageUrl: this.state.input});
 			app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
     		function(response) {
       	// do something with response
+        console.log(response)
     	},
     	function(err) {
-      // there was an error
+      console.log('errrorroorroorororro!!!!!')
     }
   	);
 	}
