@@ -5,6 +5,8 @@
   "dependencies": {
     "ajv": "^6.5.1",
     "clarifai": "^2.8.0",
+    "express": "^4.16.3",
+    "nodemon": "^1.18.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-particles-js": "^2.2.0",
