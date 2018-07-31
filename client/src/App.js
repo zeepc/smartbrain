@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
+import Particles from 'react-particles-js';
+import Clarifai from 'clarifai';
+import FaceRecognition from './components/facerecognition/FaceRecognition';
 import Navigation from './components/navigation/Navigation';
-import Logo from './components/logo/Logo';
 import Signin from './components/signin/Signin';
 import Register from './components/register/Register';
-import Clarifai from 'clarifai';
+import Logo from './components/logo/Logo';
+import ImageLinkForm from './components/imagelinkform/ImageLinkForm';
 import Rank from './components/rank/Rank';
-import ImageLinkForm  from './components/imagelinkform/ImageLinkForm';
-import FaceRecognition from './components/facerecognition/FaceRecognition';
-import Particles from 'react-particles-js';
 import './App.css';
 import 'tachyons';
 
@@ -89,10 +89,13 @@ class App extends Component {
 //listen for image link submission and call the Clarifai API to find a human face on the picture. 
 	onButtonSubmit = () => {
 		this.setState({imageUrl: this.state.input});
-			app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+			app.models
+      .predict(
+        Clarifai.FACE_DETECT_MODEL,
+        this.state.input)
       .then(response => {
-        if(response) {
-          fetch('http://localhost:3000/image',{
+        if (response) {
+          fetch('http://localhost:3000/image', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
