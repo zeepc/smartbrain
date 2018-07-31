@@ -6,6 +6,7 @@
     "ajv": "^6.5.1",
     "body-parser": "^1.18.3",
     "clarifai": "^2.8.0",
+    "cors": "^2.8.4",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-particles-js": "^2.2.0",
@@ -14,7 +15,7 @@
     "tachyons": "^4.10.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
