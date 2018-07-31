@@ -1,5 +1,5 @@
 const express =  require('express');
-const app = express();
+
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const bcrypt = require('bcrypt-nodejs');
@@ -39,24 +39,46 @@ const database = {
 	]
 }
 
+const app = express();
+
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/', (req, res) =>{
+app.get('/', (req, res) => {
 	res.send(database.users);
 })
 
-app.post('/signin', (req, res) =>{
+app.post('/signin', (req, res) => {
+	db.select('email', 'hash').from('login')
+	.where('email', '=', req.body.email)
+	.then(data => {
+		const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
+			if (isValid) {
+				return db.select('*').from('users')
+				.where('email', '=', req.body.email)
+				.then(user => {
+					res.json(user[0])
+				})
+				.catch(err => res.status(400).json('unable to register'))
+			} else {
+				res.status(400).json('Wrong Credentials')
+			}
+	})
+	.catch(err => res.status(400).json('Wrong Credentials'))
+})
+
+
+app.post('/register', (req, res) => {
 	const { email, name, password } = req.body;
 	const hash = bcrypt.hashSync(password);
-	db.transaction(trx =>{
+	db.transaction(trx => {
 		trx.insert({
 			hash: hash,
 			email: email
 		})
 		.into('login')
 		.returning('email')
-		.then(loginEmail =>{
+		.then(loginEmail => {
 			return trx('users')
 			.returning('*')
 			.insert({
@@ -72,20 +94,6 @@ app.post('/signin', (req, res) =>{
 		.catch(trx.rollback)
 	})
 	.catch(err => res.status(400).json('unable to register'))
-})
-
-
-app.post('/register', (req, res) =>{
-	const { email, name, password } = req.body;
-	db('users').insert({
-		email: email,
-		name: name,
-		joined: new Date()
-	})
-	.then(user => {
-		res.json(user[0]);
-	})
-	.catch(err => res.status(400).json(err))
 })
 
 app.get('/profile/:id', (req, res) =>{
