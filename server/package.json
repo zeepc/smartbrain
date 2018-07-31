@@ -9,12 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.2",
-    "knex": "^0.14.2",
-    "pg": "^7.4.0"
+    "knex": "^0.14.6",
+    "pg": "^7.4.3"
   },
   "devDependencies": {
     "nodemon": "^1.12.7"
