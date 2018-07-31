@@ -8,8 +8,6 @@ const db = knex({
   client: 'pg',
   connection: {
     host : '127.0.0.1',
-    user : 'aneagoie',
-    password : '',
     database : 'smart-brain'
   }
 });
@@ -28,10 +26,12 @@ app.post('/signin', (req, res) => {
     .where('email', '=', req.body.email)
     .then(data => {
       const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
+      console.log('HEY YOU !!!!!!!!!!!', isValid)
       if (isValid) {
         return db.select('*').from('users')
           .where('email', '=', req.body.email)
           .then(user => {
+            console.log('????????????//', user);
             res.json(user[0])
           })
           .catch(err => res.status(400).json('unable to get user'))
